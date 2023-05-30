@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Environment",
+            "type": "shell",
+            "command": "${workspaceFolder}\\env\\Scripts\\activate",
+            "args": [],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run API",
+            "type": "shell",
+            "command": "${workspaceFolder}\\env\\Scripts\\python",
+            "args": [
+                "${workspaceFolder}\\src\\main.py"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

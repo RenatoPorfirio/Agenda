@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>registro</title>
+    </head>
+    <body>
+        <button onclick="redirect('')">cancelar</button><br/>
+        <div id="div">
+            <fieldset id="fieldset" style="background-color: grey;">
+                <form id="form" action="">
+                    <h1><label style="background-color: white; padding: 1%;">Nova Tarefa</label></h1><br>
+                    <label>Data:</label><br>
+                    <input type="date" name="data"><br>
+                    <button id="tmp" type="submit" onclick="init()">continuar</button>
+                </form>
+            </fieldset>
+        </div>
+    </body>
+    <script>
+        function redirect(route){
+            window.location.href = "http://localhost:5000/"+route;
+        }
+        function init(){
+            form.removeChild(form.children[6]);
+
+            label = form.appendChild(document.createElement('label')); //children[6]
+            label.innerHTML = 'Titulo:';
+            form.appendChild(document.createElement('br')); //children[7]
+
+            elem = form.appendChild(document.createElement('input')); //children[8]
+            elem.setAttribute('type', 'text');
+            elem.setAttribute('name', 'titulo');
+            elem.setAttribute('placeholder', 'digite um titulo breve');
+            form.appendChild(document.createElement('br')); //children[9]
+
+            label = form.appendChild(document.createElement('label')); //children[10]
+            label.innerHTML = 'Descrição:';
+            form.appendChild(document.createElement('br')); //children[11]
+
+            elem = form.appendChild(document.createElement('textarea')); //children[12]
+            elem.setAttribute('name', 'descricao');
+            elem.setAttribute('cols', '25');
+            elem.setAttribute('rows', '10');
+            form.appendChild(document.createElement('br')); //children[13]
+
+            label = form.appendChild(document.createElement('label')); //children[14]
+            label.innerHTML = 'Horario: ';
+            elem = form.appendChild(document.createElement('input')); //children[15]
+            elem.setAttribute('name', 'horario');
+            elem.setAttribute('type', 'time');
+            form.appendChild(document.createElement('br')); //children[16]
+            form.appendChild(document.createElement('br')); //children[17]
+
+            elem = form.appendChild(document.createElement('button')); //children[18]
+            elem.setAttribute('type', 'submit');
+            elem.setAttribute('onclick', 'next()');
+            elem.innerHTML = 'Próxima Tarefa';
+
+            elem = form.appendChild(document.createElement('button')); //children[19]
+            elem.setAttribute('type', 'submit');
+            elem.setAttribute('onclick', 'finish()');
+            elem.innerHTML = 'Finalizar';
+        }
+        function next(){
+            fetch('http://localhost:5000/registro', {
+                method: 'POST',
+                //headers: {'Content-Type': 'application/json'},
+                body: new FormData(form)
+            })
+            .then(response => response.text())
+            .catch(error => {console.error(error);});
+            for(i = 6; i < 18; i++){
+                form.children[i].value = form.children[i].defaultValue
+            }
+        }
+        function finish(){
+
+        }
+
+        const form = document.getElementById('form');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+        
+    </script>
+</html>

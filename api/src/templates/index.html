@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>index</title>
+    </head>
+    <body>
+        <button onclick="redirect('registro')">Nova Tarefa</button>
+        <div id="div"></div>
+    </body>
+    <script>
+        function redirect(route){
+            window.location.href = "http://localhost:5000/"+route;
+        }
+        function send(date, task){
+            console.log('a');
+            window.location.assign(`http://localhost:5000/view?date=${date}&task=${task}`);
+        }
+
+        div = document.getElementById('div');
+        fetch('http://localhost:5000/tarefas')
+        .then(response => response.json())
+        .then(data => {
+            for (date in data){
+                const date_obj = new Date(date);
+                const dia = String(date_obj.getDate() + 1).padStart(2, '0');
+                const mes = String(date_obj.getMonth() + 1).padStart(2, '0');
+                const ano = String(date_obj.getFullYear());
+                let container = document.createElement('div');
+                let title = document.createElement('p');
+                title.innerHTML = `${dia}/${mes}/${ano}`;
+                let table = document.createElement('table');
+                container.appendChild(title);
+                container.appendChild(table);
+                let row = document.createElement('tr');
+                table.appendChild(row);
+                mark = 0;
+                for (task in data[date]){
+                    if(mark > 2){
+                        mark = 0;
+                        row = document.createElement('tr');
+                        table.appendChild(row);
+                    }
+                    let th = document.createElement('th');
+                    th.innerHTML = `<button onclick="send('${date}','${task}')">${data[date][task]['titulo']}</button>`;
+                    row.appendChild(th);
+                    mark++;
+                }
+                div.appendChild(container);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    </script>
+</html>
